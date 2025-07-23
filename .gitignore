@@ -1,5 +1,6 @@
 .nextflow/
 .nextflow.log
+.nextflow.log.*
 PROCESS/
 data/*
 !data/.gitkeep
