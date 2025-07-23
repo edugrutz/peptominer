@@ -1,0 +1,122 @@
+jul.-22 16:45:39.167 [main] DEBUG nextflow.cli.Launcher - $> nextflow run /home/eduardo/peptominer/main.nf --input /home/eduardo/peptominer/data --k_min 21 --k_max 25 --threads 12 --mode single -resume
+jul.-22 16:45:39.215 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 25.04.6
+jul.-22 16:45:39.227 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/eduardo/.nextflow/plugins; core-plugins: nf-amazon@2.15.0,nf-azure@1.16.0,nf-cloudcache@0.4.3,nf-codecommit@0.2.3,nf-console@1.2.1,nf-google@1.21.1,nf-k8s@1.0.0,nf-tower@1.11.4,nf-wave@1.12.1
+jul.-22 16:45:39.241 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+jul.-22 16:45:39.241 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+jul.-22 16:45:39.243 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+jul.-22 16:45:39.248 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+jul.-22 16:45:39.257 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /home/eduardo/peptominer/nextflow.config
+jul.-22 16:45:39.258 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /home/eduardo/peptominer/nextflow.config
+jul.-22 16:45:39.273 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/eduardo/.nextflow/secrets/store.json
+jul.-22 16:45:39.274 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@41aaedaa] - activable => nextflow.secret.LocalSecretsProvider@41aaedaa
+jul.-22 16:45:39.280 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `standard`
+jul.-22 16:45:39.481 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 by global default
+jul.-22 16:45:39.488 [main] DEBUG nextflow.cli.CmdRun - Launching `/home/eduardo/peptominer/main.nf` [cheesy_baekeland] DSL2 - revision: f2970b3da6
+jul.-22 16:45:39.489 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+jul.-22 16:45:39.489 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+jul.-22 16:45:39.514 [main] DEBUG nextflow.Session - Session UUID: e2f45852-2016-47f0-933a-ae25456ffddb
+jul.-22 16:45:39.514 [main] DEBUG nextflow.Session - Run name: cheesy_baekeland
+jul.-22 16:45:39.514 [main] DEBUG nextflow.Session - Executor pool size: 24
+jul.-22 16:45:39.519 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+jul.-22 16:45:39.522 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=72; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+jul.-22 16:45:39.532 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 25.04.6 build 5954
+  Created: 01-07-2025 11:27 UTC (08:27 BRST)
+  System: Linux 6.8.0-60-generic
+  Runtime: Groovy 4.0.26 on OpenJDK 64-Bit Server VM 23.0.2-internal-adhoc.conda.src
+  Encoding: UTF-8 (UTF-8)
+  Process: 179620@lab-bioinfo-pc-09 [127.0.1.1]
+  CPUs: 24 - Mem: 15.3 GB (4.3 GB) - Swap: 32 GB (28.1 GB)
+jul.-22 16:45:39.548 [main] DEBUG nextflow.Session - Work-dir: /home/eduardo/peptominer/work [ext2/ext3]
+jul.-22 16:45:39.565 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+jul.-22 16:45:39.570 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+jul.-22 16:45:39.573 [main] DEBUG nextflow.Session - Observer factory (v2): LinObserverFactory
+jul.-22 16:45:39.585 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+jul.-22 16:45:39.589 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 25; maxThreads: 1000
+jul.-22 16:45:39.626 [main] DEBUG nextflow.Session - Session start
+jul.-22 16:45:39.873 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+jul.-22 16:45:39.919 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.919 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.922 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+jul.-22 16:45:39.926 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=24; memory=15.3 GB; capacity=24; pollInterval=100ms; dumpInterval=5m
+jul.-22 16:45:39.927 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+jul.-22 16:45:39.938 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'fastp': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.970 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.970 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.971 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'kraken2': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.974 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.974 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.975 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'megahit': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.977 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.977 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.978 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'kraken2_contigs': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.981 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.981 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.982 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'pyrodigal': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.986 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.986 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.986 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'anticp': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.989 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.989 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.989 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'macrel': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.993 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.993 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.993 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'eggnog_filter': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.996 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: null
+jul.-22 16:45:39.996 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+jul.-22 16:45:39.996 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'krona': maxForks=0; fair=false; array=0
+jul.-22 16:45:39.997 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: kraken2_contigs, krona, kraken2, eggnog, anticp, pyrodigal, megahit, eggnog_filter, fastp, macrel
+jul.-22 16:45:39.998 [main] DEBUG nextflow.Session - Igniting dataflow network (9)
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > fastp
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > kraken2
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > megahit
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > kraken2_contigs
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > pyrodigal
+jul.-22 16:45:39.999 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > anticp
+jul.-22 16:45:40.000 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > macrel
+jul.-22 16:45:40.000 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > eggnog_filter
+jul.-22 16:45:40.000 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > krona
+jul.-22 16:45:40.000 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_5ae37f33905d905a: /home/eduardo/peptominer/main.nf
+jul.-22 16:45:40.000 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+jul.-22 16:45:40.000 [main] DEBUG nextflow.Session - Session await
+jul.-22 16:45:40.092 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:40.093 [Task submitter] INFO  nextflow.Session - [3c/84971b] Submitted process > fastp
+jul.-22 16:45:43.074 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: fastp; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/3c/84971b3f7b90c61843877889215843]
+jul.-22 16:45:43.074 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'TaskFinalizer' minSize=10; maxSize=72; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+jul.-22 16:45:43.095 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:43.095 [Task submitter] INFO  nextflow.Session - [39/3c19c9] Submitted process > megahit
+jul.-22 16:45:43.099 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:43.099 [Task submitter] INFO  nextflow.Session - [9e/b2fa0c] Submitted process > kraken2
+jul.-22 16:45:45.743 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: megahit; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/39/3c19c95ee5d106545b6dbfdb3f0fd8]
+jul.-22 16:45:45.753 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:45.753 [Task submitter] INFO  nextflow.Session - [f6/8bd807] Submitted process > pyrodigal
+jul.-22 16:45:45.756 [TaskFinalizer-2] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=72; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+jul.-22 16:45:45.756 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:45.757 [Task submitter] INFO  nextflow.Session - [eb/baf003] Submitted process > kraken2_contigs
+jul.-22 16:45:45.890 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: pyrodigal; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/f6/8bd807eb705fb59bedad6b498974e2]
+jul.-22 16:45:45.897 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:45.897 [Task submitter] INFO  nextflow.Session - [86/f68432] Submitted process > macrel
+jul.-22 16:45:45.902 [Actor Thread 23] INFO  nextflow.conda.CondaCache - Creating env using conda: envs/peptominer_anticp.yml [cache /home/eduardo/peptominer/work/conda/env-07a493a9edc58966-b652b3468b64c071d7beab342998a732]
+jul.-22 16:45:46.829 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 7; name: macrel; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/86/f68432e4bd2b227cac0294fb3ee60d]
+jul.-22 16:45:49.269 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: kraken2; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/9e/b2fa0cebfbc95e48935c71bf703c21]
+jul.-22 16:45:53.381 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: kraken2_contigs; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/eb/baf003500ec76858308f724a6e035f]
+jul.-22 16:45:53.401 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:45:53.401 [Task submitter] INFO  nextflow.Session - [0d/720d05] Submitted process > krona
+jul.-22 16:45:55.165 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 8; name: krona; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/0d/720d05ba1a7067a293a0026033d245]
+jul.-22 16:46:27.084 [Actor Thread 23] DEBUG nextflow.conda.CondaCache - 'conda' create complete env=envs/peptominer_anticp.yml path=/home/eduardo/peptominer/work/conda/env-07a493a9edc58966-b652b3468b64c071d7beab342998a732
+jul.-22 16:46:27.091 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:46:27.091 [Task submitter] INFO  nextflow.Session - [a7/95c7f9] Submitted process > anticp
+jul.-22 16:46:27.982 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: anticp; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/a7/95c7f95e896fd1f5450fdda2d8defc]
+jul.-22 16:46:27.992 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+jul.-22 16:46:27.993 [Task submitter] INFO  nextflow.Session - [ec/f22611] Submitted process > eggnog_filter
+jul.-22 16:46:28.034 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 9; name: eggnog_filter; status: COMPLETED; exit: 0; error: -; workDir: /home/eduardo/peptominer/work/ec/f22611bc80866e900c359fc1316c8e]
+jul.-22 16:46:28.037 [main] DEBUG nextflow.Session - Session await > all processes finished
+jul.-22 16:46:28.136 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+jul.-22 16:46:28.137 [main] DEBUG nextflow.Session - Session await > all barriers passed
+jul.-22 16:46:28.147 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'TaskFinalizer' shutdown completed (hard=false)
+jul.-22 16:46:28.148 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+jul.-22 16:46:28.181 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=9; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=22.6s; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=3; peakCpus=3; peakMemory=0; ]
+jul.-22 16:46:28.360 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+jul.-22 16:46:28.389 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+jul.-22 16:46:28.389 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye
