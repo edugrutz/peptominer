@@ -37,13 +37,12 @@ process kraken2 {
     path clean_fastq_files
 
     output:
-    path kraken2_report: "kraken2_output.txt" // Dando um nome específico para esta saída
-    path kraken2_class: "kraken2_classification.txt" // Dando um nome específico para esta saída
+    path "kraken2_output.txt"
 
     script:
     if (params.mode == "single")
         """
-        kraken2 --db ${params.kraken_db} \
+        kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
                 --report kraken2_output.txt \
                 --output kraken2_classification.txt \
@@ -51,7 +50,7 @@ process kraken2 {
         """
     else
         """
-        kraken2 --db ${params.kraken_db} \
+        kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
                 --report kraken2_output.txt \
                 --output kraken2_classification.txt \
@@ -71,7 +70,7 @@ process kraken2_contigs {
     script:
     if (params.mode == "single")
         """
-        kraken2 --db ${params.kraken_db} \
+        kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
                 --report kraken2_contigs_output.txt \
                 --output kraken2_contigs_classification.txt \
@@ -79,7 +78,7 @@ process kraken2_contigs {
         """
     else
         """
-        kraken2 --db ${params.kraken_db} \
+        kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
                 --report kraken2_contigs_output.txt \
                 --output kraken2_contigs_classification.txt \
@@ -100,9 +99,8 @@ process megahit {
     if (params.mode == "single")
         """
         megahit -r ${clean_fastq_files} -o megahit_output \
-                -t 8 \
+                -t ${params.threads} \
                 --mem-flag 0 \
-                --use-gpu \
                 --k-min 21 \
                 --k-max 51 \
                 --k-step 10
@@ -111,9 +109,8 @@ process megahit {
     else
         """
         megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -o megahit_output \
-                -t 8 \
+                -t ${params.threads} \
                 --mem-flag 0 \
-                --use-gpu \
                 --k-min 21 \
                 --k-max 51 \
                 --k-step 10
@@ -135,6 +132,7 @@ process pyrodigal {
     prodigal -i ${megahit_output} -o pyrodigal_output.gff \
              -a proteins.faa \
              -d nucleotides.fna \
+             -p meta \
              -f gff
     """
 }
@@ -206,13 +204,13 @@ process krona {
 workflow {
     def fastq_files = Channel.fromPath('data/*.fastq')
     fastp(fastq_files)
-    kraken2(fastp.out.collect())
-    megahit(fastp.out.collect())
-    kraken2_contigs(megahit.out.collect())
-    pyrodigal(megahit.out.collect())
-    anticp(pyrodigal.out.collect())
-    macrel(pyrodigal.out.collect())
+    kraken2(fastp.out.collect{ it })
+    megahit(fastp.out.collect{ it })
+    kraken2_contigs(megahit.out.collect{ it })
+    pyrodigal(megahit.out.collect{ it })
+    anticp(pyrodigal.out.collect{ it })
+    macrel(pyrodigal.out.collect{ it })
     if (params.map)
-        eggnog(pyrodigal.out.collect())
-    krona(kraken2.out.collect())
+        eggnog(pyrodigal.out.collect{ it })
+    krona(kraken2.out.collect{ it })
 }

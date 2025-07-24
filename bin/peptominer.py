@@ -49,7 +49,7 @@ def run_pipeline(input_dir, output_dir=None, k_min=21, k_max=25, threads=12, use
         command.extend(["--use_kraken", "true"])
 
     if use_map:
-        command.extend(["--use_map", "true"])
+        command.extend(["--map", "true"])
 
     subprocess.run(command)
 

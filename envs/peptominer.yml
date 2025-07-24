@@ -1,0 +1,19 @@
+name: peptominer
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - fastqc
+  - sra-tools
+  - multiqc
+  - megahit
+  - prodigal
+  - pyrodigal
+  - fastp
+  - kraken2
+  - macrel
+  - pip
+  - pip:
+    - toxinpred3

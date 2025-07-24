@@ -1,0 +1,10 @@
+name: peptominer_anticp
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.7.0
+  - pip
+  - pip:
+    - anticp2
