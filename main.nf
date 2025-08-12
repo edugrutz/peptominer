@@ -202,8 +202,8 @@ process krona {
 }
 
 workflow {
-    def fastq_files = Channel.fromPath('data/*.fastq')
-    fastp(fastq_files)
+    input = file("${params.input}/*.fastq")
+    fastp(input)
     kraken2(fastp.out.collect{ it })
     megahit(fastp.out.collect{ it })
     kraken2_contigs(megahit.out.collect{ it })
