@@ -37,16 +37,15 @@ for sra_id in "${sra_ids[@]}"; do
         echo "$sra_id is already processed. Skipping..."
         continue
     fi
+
     echo "$count/$total - Downloading SRA file for $sra_id..."
-
-    fasterq-dump "$sra_id" --split-files --outdir ./data
-    echo "Downloaded $sra_id to ./data"
-
     mkdir -p ./data/$sra_id
+    fasterq-dump "$sra_id" --outdir ./data/$sra_id
+    echo "Downloaded $sra_id to ./data/$sra_id"
 
-    peptominer -i ./data -o ./data/$sra_id --kraken --threads 8 --map
+    peptominer -i ./data/$sra_id -o ./data/$sra_id --kraken --threads 8 --map
 
-    rm -rf ./data/*.fastq
+    rm -rf ./data/$sra_id/*.fastq
     rm -rf ./work/*
     rm -rf ./.nextflow.log.*
 done
