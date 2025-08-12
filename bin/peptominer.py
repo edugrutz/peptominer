@@ -18,8 +18,10 @@ def detect_mode(input_dir):
         return "single"
     elif len(fastq_files) == 2:
         return "paired"
+    elif len(fastq_files) == 3:
+        return "mixed"
     else:
-        print(f"Erro: Esperado 1 (single-end) ou 2 (paired-end) arquivos, mas foram encontrados {len(fastq_files)}.", file=sys.stderr)
+        print(f"Erro: Esperado 1 (single-end), 2 (paired-end) arquivos, ou 3 (mixed), mas foram encontrados {len(fastq_files)}.", file=sys.stderr)
         sys.exit(1)
 
 def run_pipeline(input_dir, output_dir=None, k_min=21, k_max=25, threads=12, use_kraken=False, use_map=False):

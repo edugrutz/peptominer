@@ -1,35 +1,41 @@
-process fastp {
-
+process fastp_single {
     input:
-    path fastq_files
-
+    path fastq_file
+    
     output:
-    path "output.fastq"
-
+    path "output_single.fastq"
+    
     script:
-    if (params.mode == "single")
-        """
-        fastp -i ${fastq_files} -o output.fastq \
-            --detect_adapter_for_pe \
-            --cut_front \
-            --cut_tail \
-            --length_required 50 \
-            --trim_front1 10 \
-            --thread 4
-        """
-    else
-        """
-        fastp -i ${fastq_files[0]} -I ${fastq_files[1]} -o output_R1.fastq -O output_R2.fastq \
-            --detect_adapter_for_pe \
-            --cut_front \
-            --cut_tail \
-            --length_required 50 \
-            --trim_front1 10 \
-            --trim_front2 10 \
-            --thread 4
-        """
+    """
+    fastp -i ${fastq_file} -o output_single.fastq \\
+        --detect_adapter_for_pe \\
+        --cut_front \\
+        --cut_tail \\
+        --length_required 50 \\
+        --trim_front1 10 \\
+        --thread 4
+    """
 }
 
+process fastp_paired {
+    input:
+    tuple path(fastq_r1), path(fastq_r2)
+    
+    output:
+    tuple path("output_paired_R1.fastq"), path("output_paired_R2.fastq")
+    
+    script:
+    """
+    fastp -i ${fastq_r1} -I ${fastq_r2} -o output_paired_R1.fastq -O output_paired_R2.fastq \\
+        --detect_adapter_for_pe \\
+        --cut_front \\
+        --cut_tail \\
+        --length_required 50 \\
+        --trim_front1 10 \\
+        --trim_front2 10 \\
+        --thread 4
+    """
+}
 process kraken2 {
     publishDir "${params.output}", mode: 'copy'
 
@@ -48,7 +54,7 @@ process kraken2 {
                 --output kraken2_classification.txt \
                 ${clean_fastq_files}
         """
-    else
+    else if (params.mode == "paired")
         """
         kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
@@ -56,6 +62,42 @@ process kraken2 {
                 --output kraken2_classification.txt \
                 --paired ${clean_fastq_files[0]} ${clean_fastq_files[1]}
         """
+    else if (params.mode == "mixed")
+    """
+    kraken2 --db ${params.kraken2_db} \
+            --threads 4 \
+            --report kraken2_output.txt \
+            --output kraken2_classification.txt \
+            --paired ${clean_fastq_files[0]} ${clean_fastq_files[1]} \
+            ${clean_fastq_files[2]}
+    """
+}
+
+process kraken2_mixed {
+    publishDir "${params.output}", mode: 'copy'
+
+    input:
+    path clean_fastq_files
+
+    output:
+    path "kraken2_output.txt"
+
+    script:
+    """
+    kraken2 --db ${params.kraken2_db} \\
+            --threads 4 \\
+            --report kraken2_paired_report.txt \\
+            --output kraken2_paired_classification.txt \\
+            --paired ${clean_fastq_files[0]} ${clean_fastq_files[1]}
+
+    kraken2 --db ${params.kraken2_db} \\
+            --threads 4 \\
+            --report kraken2_orphans_report.txt \\
+            --output kraken2_orphans_classification.txt \\
+            ${clean_fastq_files[2]}
+
+    cat kraken2_paired_report.txt kraken2_orphans_report.txt > kraken2_output.txt
+    """
 }
 
 process kraken2_contigs {
@@ -68,21 +110,12 @@ process kraken2_contigs {
     path "kraken2_contigs_output.txt"
 
     script:
-    if (params.mode == "single")
         """
         kraken2 --db ${params.kraken2_db} \
                 --threads 4 \
                 --report kraken2_contigs_output.txt \
                 --output kraken2_contigs_classification.txt \
                 ${megahit_output}
-        """
-    else
-        """
-        kraken2 --db ${params.kraken2_db} \
-                --threads 4 \
-                --report kraken2_contigs_output.txt \
-                --output kraken2_contigs_classification.txt \
-                --paired ${megahit_output[0]} ${megahit_output[1]}
         """
 }
 
@@ -98,22 +131,23 @@ process megahit {
     script:
     if (params.mode == "single")
         """
-        megahit -r ${clean_fastq_files} -o megahit_output \
-                -t ${params.threads} \
-                --mem-flag 0 \
-                --k-min 21 \
-                --k-max 51 \
-                --k-step 10
+        megahit -r ${clean_fastq_files} -o megahit_output \\
+                -t ${params.threads} --mem-flag 0 \\
+                --k-min 21 --k-max 51 --k-step 10
         cp megahit_output/final.contigs.fa .
         """
-    else
+    else if (params.mode == "paired")
         """
-        megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -o megahit_output \
-                -t ${params.threads} \
-                --mem-flag 0 \
-                --k-min 21 \
-                --k-max 51 \
-                --k-step 10
+        megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -o megahit_output \\
+                -t ${params.threads} --mem-flag 0 \\
+                --k-min 21 --k-max 51 --k-step 10
+        cp megahit_output/final.contigs.fa .
+        """
+    else if (params.mode == "mixed")
+        """
+        megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -r ${clean_fastq_files[2]} -o megahit_output \\
+                -t ${params.threads} --mem-flag 0 \\
+                --k-min 21 --k-max 51 --k-step 10
         cp megahit_output/final.contigs.fa .
         """
 }
@@ -202,15 +236,55 @@ process krona {
 }
 
 workflow {
-    input = file("${params.input}/*.fastq")
-    fastp(input)
-    kraken2(fastp.out.collect{ it })
-    megahit(fastp.out.collect{ it })
-    kraken2_contigs(megahit.out.collect{ it })
-    pyrodigal(megahit.out.collect{ it })
-    anticp(pyrodigal.out.collect{ it })
-    macrel(pyrodigal.out.collect{ it })
-    if (params.map)
-        eggnog(pyrodigal.out.collect{ it })
-    krona(kraken2.out.collect{ it })
+    input_dir = file("${params.input}")
+    
+    // Assegurar que o diretório de entrada existe
+    if (!input_dir.exists()) {
+        error "Diretório de entrada não encontrado: ${params.input}"
+    }
+
+    if (params.mode == "single") {
+        input_channel = Channel.fromPath("${input_dir}/*.fastq")
+        fastp_single(input_channel)
+        kraken2(fastp_single.out)
+        megahit(fastp_single.out)
+        kraken2_contigs(megahit.out)
+    } 
+    else if (params.mode == "paired") {
+        input_channel = Channel.fromFilePairs("${input_dir}/*_{1,2}.fastq")
+
+        fastp_paired(input_channel.map { it[1] })
+
+        kraken2(fastp_paired.out.collect())
+        megahit(fastp_paired.out.collect())
+        kraken2_contigs(megahit.out)
+    }
+    else if (params.mode == "mixed") {
+    paired_channel = Channel.fromFilePairs("${input_dir}/*_{1,2}.fastq")
+    orphans_channel = Channel.fromPath("${input_dir}/*.fastq")
+        .filter { !it.name.matches(".*_[12]\\.fastq") }
+
+    fastp_paired(paired_channel.map { it[1] })
+    fastp_single(orphans_channel)
+
+    qc_outputs = fastp_paired.out.merge(fastp_single.out)
+
+    kraken2_mixed(qc_outputs.collect())
+    megahit(qc_outputs)
+
+    kraken2_contigs(megahit.out)
+    }
+
+    pyrodigal(megahit.out)
+    anticp(pyrodigal.out)
+    macrel(pyrodigal.out)
+    if (params.map) {
+        eggnog(pyrodigal.out)
+    }
+    if (params.mode != "mixed") {
+        krona(kraken2.out)
+    }
+    if (params.mode == "mixed") {
+        krona(kraken2_mixed.out)
+    }
 }
