@@ -133,21 +133,21 @@ process megahit {
         """
         megahit -r ${clean_fastq_files} -o megahit_output \\
                 -t ${params.threads} --mem-flag 0 \\
-                --k-min 21 --k-max 51 --k-step 10
+                --k-min 21 --k-max 31 --k-step 2 --min-contig-len 50 --min-count 1
         cp megahit_output/final.contigs.fa .
         """
     else if (params.mode == "paired")
         """
         megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -o megahit_output \\
                 -t ${params.threads} --mem-flag 0 \\
-                --k-min 21 --k-max 51 --k-step 10
+                --k-min 21 --k-max 31 --k-step 2 --min-contig-len 50 --min-count 1
         cp megahit_output/final.contigs.fa .
         """
     else if (params.mode == "mixed")
         """
         megahit -1 ${clean_fastq_files[0]} -2 ${clean_fastq_files[1]} -r ${clean_fastq_files[2]} -o megahit_output \\
                 -t ${params.threads} --mem-flag 0 \\
-                --k-min 21 --k-max 51 --k-step 10
+                --k-min 21 --k-max 31 --k-step 2 --min-contig-len 50 --min-count 1
         cp megahit_output/final.contigs.fa .
         """
 }
@@ -163,11 +163,13 @@ process pyrodigal {
 
     script:
     """
-    prodigal -i ${megahit_output} -o pyrodigal_output.gff \
-             -a proteins.faa \
-             -d nucleotides.fna \
-             -p meta \
-             -f gff
+    pyrodigal -i ${megahit_output} \
+               -o pyrodigal_output.gff \
+               -a proteins.faa \
+               -d nucleotides.fna \
+               -p meta \
+               -f gff \
+               --min-gene 30
     """
 }
 
